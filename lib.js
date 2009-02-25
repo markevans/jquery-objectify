@@ -2,7 +2,7 @@
 
 //////// Square ////////
 
-$.objectifyPlugin('square', {
+$.objectify('square', {
   instance: {
     count: 0,
     counter_interval_id: 0
@@ -25,7 +25,7 @@ $.objectifyPlugin('square', {
       this.counter_interval_id = setInterval(function(){ self.nextCount() }, 1000);
     }
   },
-  init: function(elem, obj, i){
+  init: function(elem, obj, i, n){
     obj.num = i;
     $(elem).click(function(){ obj.countToFive() })
   }
