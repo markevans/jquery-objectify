@@ -25,6 +25,11 @@
     var prototype_vars = opts.prototype || {};
     var code_block     = opts.init      || function(){};
 
+    // Add the 'transmit' method to the prototype
+    prototype_vars.transmit = function(event_name){
+      $().trigger(name+'.'+event_name, this);
+    }
+
     // Define class with prototype methods and attributes
     var klass = function(){};
     $.extend(klass.prototype, prototype_vars);
@@ -53,5 +58,15 @@
     }
   
   }
+
+  // Connect is a thin wrapper around bind for global events
+  $.connect = function(global_event, selector, func){
+    $().bind(global_event, function(){
+      var obj = arguments[1];
+      $(selector).each(function(i){
+        func.apply(this, [obj]);
+      });
+    });
+  };
 
 })(jQuery);
