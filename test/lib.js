@@ -13,13 +13,18 @@
         $(this.elem).html(this.count);
         if(this.count == 5){
           clearInterval(this.counter_interval_id);
+          this.colour('green');
           this.transmit('finished_counting');
         }
       },
       countToFive: function(){
-        $().trigger('square.starting_to_count', [this]);
+        this.transmit('starting_to_count');
+        this.colour('yellow');
         var self = this;
         this.counter_interval_id = setInterval(function(){ self.nextCount() }, 1000);
+      },
+      colour: function(clr){
+        $(this.elem).css({'background-color': clr});
       }
     },
     init: function(elem, obj, i, n){
