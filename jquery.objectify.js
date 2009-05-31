@@ -1,22 +1,8 @@
 (function(){
   
-  // objectify defines a new jquery 'plugin' method using the name passed in
-  //
-  // e.g. $.objectify('hello', ...) is equivalent to
-  //      $.fn.hello = function(){ ... }
-  //
-  // However it also defines a class (i.e. function), and when $('some_selector').hello() is called,
-  // instantiates objects of that class and 'attaches' one to each of the selected elements
-  //
-  // The arguments passed to this method define the behaviour of the class, as in this example:
-  //
-  // $.objectify('hello',{
-  //   instance: { colour: red },                                                            // instance methods/attributes of the class
-  //   prototype: { display: function(){ alert('hello'); } },                                // prototype methods/attributes of the class
-  //   init: function(i, obj, elem){ ...do stuff as you would with a normal plugin...},      // what the plugin actually does
-  // })
-  //
-  //
+  // Taken from http://github.com/markevans/jquery-objectify
+  // See the README for usage instructions
+
   $.objectify = function(name, opts){
     
     // '..._vars' correspond to both methods and attributes
@@ -50,7 +36,7 @@
         obj.elem = elem; // Make the elem available for use in object methods via 'this.elem'
         elem.obj = obj;  // Make the obj available for use in jquery methods via 'this.obj'
 
-        code_block(elem, obj, i, n);
+        code_block.call(obj, i, n);
 
       });
     
@@ -63,8 +49,8 @@
   $.connect = function(global_event, selector, func){
     $().bind(global_event, function(){
       var obj = arguments[1];
-      $(selector).each(function(i){
-        func.apply(this, [obj]);
+      $(selector).each(function(){
+        func.call(this, obj, this);
       });
     });
   };
