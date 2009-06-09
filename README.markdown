@@ -153,3 +153,11 @@ has a `elem` attribute pointing to the DOM element.
 So to access an object directly, we can, for example, set the third clock object to 2 o'clock by doing
 
     $('.js_clock')[2].obj.set(2,0,0)
+    
+Requirements
+===========
+- [jQuery](http://jquery.com/) (works with at least version 1.2.6 as far as I know, probably earlier too)
+
+Installation
+============
+Simply copy the file jquery.objectify.js, and include it in your html files after jquery.
