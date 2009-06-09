@@ -1,12 +1,17 @@
 ;(function(){
 
+  //////// Message Box ////////
+  $.objectify('messageBox', {
+    prototype: {
+      display: function(message){
+        $(this.elem).html(message)
+      }
+    }
+  });
+
   //////// Square ////////
 
   $.objectify('square', {
-    instance: {
-      count: 0,
-      counter_interval_id: 0
-    },
     prototype: {
       nextCount: function(){
         this.count++
@@ -30,18 +35,13 @@
     init: function(i, n){
       var self = this;
       this.num = i;
+      this.count = 0;
       $(self.elem).click(function(){ self.countToFive() })
     }
   });
   
   ////// Clock ///////
   $.objectify('clock',{
-    instance: {
-      hours: 12,
-      minutes: 0,
-      seconds: 0,
-      interval_id: null
-    },
     prototype: {
       start: function(){
         var self = this;
@@ -80,6 +80,9 @@
       }
     },
     init: function(i, n){
+      this.hours = 12;
+      this.minutes = 0;
+      this.seconds = 0;
       this.start();
     }
   });

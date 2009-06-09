@@ -23,9 +23,6 @@ Let's build a simple digital clock.
 - We put the code which defines the object's behaviour in a common js file, e.g. 'lib.js':
 
         $.objectify('clock',{
-          instance: {
-            // attributes for each instance here...
-          },
           prototype: {
             // things shared by the objects' prototype, (will mainly be methods) here...
           },
@@ -48,13 +45,7 @@ What does the code look like?
 -------------
 
     $.objectify('clock',{
-      instance: {           // INITIALIZE INSTANCE ATTRIBUTES
-        hours: 12,
-        minutes: 0,
-        seconds: 0,
-        interval_id: null
-      },
-      prototype: {          // INSTANCE METHODS
+      prototype: {              // METHODS ETC.
         start: function(){
           var self = this;
           this.interval_id = window.setInterval(function(){self.incrementTime()}, 1000)
@@ -91,7 +82,10 @@ What does the code look like?
                        find('.js_seconds').html(this.seconds);
         }
       },
-      init: function(i, n){        // OTHER INITIALIZATION
+      init: function(i, n){    // INITIALIZATION
+        this.hours = 12;
+        this.minutes = 0;
+        this.seconds = 0;
         this.start();
       }
     });
@@ -99,10 +93,6 @@ What does the code look like?
 
 Notes on the code
 -----------------
-- `instance` hash:
-
-    each clock object will begin life with these attributes (this could also be done in the init function)
-  
 - `prototype` hash:
 
     mainly used for defining instance methods.
@@ -124,8 +114,7 @@ Inter-object communication
 
 It's good practice for normally unrelated objects not to know about each other.
 
-Suppose on some pages we have a `popupMessage` object which is attached to elements with the class `js_popup_message`.
-On those pages we want to display a message every hour to remind us of the time (how annoying!).
+Suppose on some pages we want to display a message every hour to remind us of the time (how annoying!).
 
 This requires the following simple code:
 
@@ -135,17 +124,25 @@ Inside clock's `incrementTime` method, we add the line
     
 when the hour has changed.
 This is clock shouting into the ether that it's updated the hour, but not caring about who might be listening.
+This is actually just a simple wrapper around jquery's `trigger`, and is equivalent to saying
 
-We make the popup message listen to this by saying (e.g. in 'application.js'):
+    $().trigger('clock.hour_changed', this)
+    
+I like to use it because it enforces (and DRYs up) the convention of using the document event listener,
+using the namespace 'clock' and attaching itself to the event.
 
-    $.connect('clock.hour_changed', '.js_popup_message', function(obj, elem){ elem.obj.display("It's "+obj.hours+" o'clock!") });
+We can then bind to this event in the usual jquery way, e.g in 'application.js':
 
-Here `obj` corresponds to the particular clock object which has changed the hour, and `elem`
-corresponds to the DOM element pointed to by the `'.js_popup_message'` selector.
-This is particularly nice as it simply won't be called on pages which have no `'.js_popup_message'` elements.
+    $().bind('clock.hour_changed', function(evt, clock_obj){
+      $('.js_message_box').html("The time is "+clock_obj.hours+"o'clock!") 
+    });
 
-`transmit` and `connect` are actually just simple wrappers around jquery's `trigger` and `bind` in the document namespace.
-The advantage is that they enforce a good convention for doing inter-object communication, and are more readable.
+...or if we had another objectify object `messageBox` attached to element `.js_message_box`, we could use the provided `connect` method:
+
+    $.connect('clock.hour_changed', '.js_message_box', function(obj1, obj2){
+      obj2.display("It's "+obj1.hours+" o'clock!")
+    });
+
 
 Notes
 =====

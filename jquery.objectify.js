@@ -50,7 +50,7 @@
     $().bind(global_event, function(){
       var obj = arguments[1];
       $(selector).each(function(){
-        func.call(this, obj, this);
+        func.call(this, obj, this.obj);
       });
     });
   };
