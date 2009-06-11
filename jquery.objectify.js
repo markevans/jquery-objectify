@@ -14,7 +14,7 @@
     // Add the 'transmit' method to the prototype
     prototype_vars.transmit = function(event_name){
       $().trigger(name+'.'+event_name, this);
-    }
+    };
 
     // Define class with prototype methods and attributes
     var klass = function(){};
@@ -27,7 +27,6 @@
     
       $(this).each(function(i){
         var elem = this;
-        var obj  = new klass();
         
         // Instantiate the object and add instance methods/attributes to it
         var obj = new klass();
@@ -41,9 +40,9 @@
       });
     
       return $(this);
-    }
+    };
   
-  }
+  };
 
   // Connect is a thin wrapper around bind for global events
   $.connect = function(global_event, selector, func){
