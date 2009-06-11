@@ -26,18 +26,18 @@ Let's build a simple digital clock.
           prototype: {
             // things shared by the objects' prototype, (will mainly be methods) here...
           },
-          init: function(i, n){
+          init: function(start_hour){
             // initialization code here...
           }
         });
 
     This has created a jquery-style plugin, equivalent to writing
         
-        $.fn.clock = function(){...
+        $.fn.clock = function(start_hour){...
 
 - We attach the object to the dom element, in the main javascript file in an on-ready e.g. 'application.js'
 
-        $('.js_clock').clock();
+        $('.js_clock').clock(12);
 
 ...and hey presto! We have a digital clock!!
 
@@ -82,8 +82,8 @@ What does the code look like?
                        find('.js_seconds').html(this.seconds);
         }
       },
-      init: function(i, n){    // INITIALIZATION
-        this.hours = 12;
+      init: function(start_hour){    // INITIALIZATION
+        this.hours = start_hour || 12;
         this.minutes = 0;
         this.seconds = 0;
         this.start();
@@ -105,8 +105,9 @@ Notes on the code
 
     Any initialization code here.
     
-    Inside the `init` function, `this` corresponds to the object, `this.elem` corresponds to the DOM element, `i` corresponds
-    to the object index within all clock objects (starting with 0), and `n` corresponds to the total number of clock objects.
+    Any arguments passed to `clock` are passed straight through to here
+    
+    As in the prototype hash, `this` corresponds to the object and `this.elem` corresponds to the DOM element
 
 
 Inter-object communication
@@ -143,9 +144,21 @@ We can then bind to this event in the usual jquery way, e.g in 'application.js':
       obj2.display("It's "+obj1.hours+" o'clock!")
     });
 
+Meta data
+=========
+Every objectify object has a bit of meta data added to it which may be useful, in the form of `obj.meta`.
+If, for example, you attached an objectify object to each of six DOM elements using:
 
-Notes
-=====
+    $('.js_square').square();
+    
+..then each of the six objects would have the following meta attributes:
+
+    obj.meta.obj_index     // number between 0 and 5, depending on the object
+    obj.meta.total_objs    // 6
+    obj.meta.selector      // '.js_square', i.e. the selector which was used to objectify the element.
+
+Accessing objects directly
+==========================
 
 Every DOM element with an objectify object attached has an `obj` attribute, and this is reciprocated by the object, which
 has a `elem` attribute pointing to the DOM element.

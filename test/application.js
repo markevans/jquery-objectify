@@ -5,7 +5,7 @@ $(function(){
 
   // Do stuff to DOM elements
   $('.js_square').square();
-  $('.js_clock').clock();
+  $('.js_clock').clock(2,30);
   $('.js_message_box').messageBox();
   
   // Bindings

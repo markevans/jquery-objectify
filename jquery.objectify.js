@@ -5,9 +5,7 @@
 
   $.objectify = function(name, opts){
     
-    // '..._vars' correspond to both methods and attributes
-    
-    var instance_vars  = opts.instance  || {};
+    // 'prototype_vars' correspond to both methods and attributes
     var prototype_vars = opts.prototype || {};
     var code_block     = opts.init      || function(){};
 
@@ -23,20 +21,25 @@
     // Define the plugin
     $.fn[name] = function(){
     
+      var selector = $(this).selector;
       var n = $(this).length; // Number of elements matching selector
+      var args = arguments;
     
       $(this).each(function(i){
-        var elem = this;
-        
         // Instantiate the object and add instance methods/attributes to it
         var obj = new klass();
-        $.extend(obj, instance_vars);
         
-        obj.elem = elem; // Make the elem available for use in object methods via 'this.elem'
-        elem.obj = obj;  // Make the obj available for use in jquery methods via 'this.obj'
+        obj.elem = this; // Make the elem available for use in object methods via 'this.elem'
+        this.obj = obj;  // Make the obj available for use in jquery methods via 'this.obj'
 
-        code_block.call(obj, i, n);
+        // Add some useful meta-data to the object
+        obj.meta = {
+          obj_index: i,
+          total_objs: n,
+          selector: selector
+        };
 
+        code_block.apply(obj, args);
       });
     
       return $(this);

@@ -32,9 +32,9 @@
         $(this.elem).css({'background-color': clr});
       }
     },
-    init: function(i, n){
+    init: function(){
       var self = this;
-      this.num = i;
+      this.num = this.meta.obj_index;
       this.count = 0;
       $(self.elem).click(function(){ self.countToFive(); });
     }
@@ -79,9 +79,9 @@
                      find('.js_seconds').html(this.seconds);
       }
     },
-    init: function(i, n){
-      this.hours = 12;
-      this.minutes = 0;
+    init: function(start_hour, start_minutes){
+      this.hours = start_hour;
+      this.minutes = start_minutes;
       this.seconds = 0;
       this.start();
     }
