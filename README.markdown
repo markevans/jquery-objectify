@@ -23,9 +23,15 @@ Let's build a simple digital clock.
 - We put the code which defines the object's behaviour in a common js file, e.g. 'lib.js':
 
         $.objectify('clock',{
-          prototype: {
-            // things shared by the objects' prototype, (will mainly be methods) here...
+          someMethod: function(){
+            // ...
           },
+          someMethod2: function(someArg){
+            // ...
+          },
+          
+          some_attribute: 5, // this is the initial value for this attribute
+          
           init: function(start_hour){
             // initialization code here...
           }
@@ -41,51 +47,49 @@ Let's build a simple digital clock.
 
 ...and hey presto! We have a digital clock!!
 
-What does the code look like?
+What does the code for the clock look like?
 -------------
 
     $.objectify('clock',{
-      prototype: {              // METHODS ETC.
-        start: function(){
-          var self = this;
-          this.interval_id = window.setInterval(function(){self.incrementTime()}, 1000)
-        },
-        stop: function(){
-          window.clearInterval(this.interval_id)
-        },
-        set: function(hours, minutes, seconds){
-          this.hours = hours;
-          this.minutes = minutes;
-          this.seconds = seconds;
-          this.updateDisplay();
-        },
-        incrementTime: function(){
-          if(this.seconds < 59){
-            this.seconds += 1
-          } else if (this.minutes < 59){
-            this.minutes += 1;
-            this.seconds = 0;
-          } else if (this.hours < 12) {
-            this.hours += 1;
-            this.minutes = 0;
-            this.seconds = 0;
-          } else {
-            this.hours = 1;
-            this.minutes = 0;
-            this.seconds = 0;
-          }
-          this.updateDisplay();
-        },
-        updateDisplay: function(){
-          $(this.elem).find('.js_hours').html(this.hours).end().
-                       find('.js_minutes').html(this.minutes).end().
-                       find('.js_seconds').html(this.seconds);
-        }
+      start: function(){
+        var self = this;
+        this.interval_id = window.setInterval(function(){self.incrementTime()}, 1000)
       },
+      stop: function(){
+        window.clearInterval(this.interval_id)
+      },
+      set: function(hours, minutes, seconds){
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
+        this.updateDisplay();
+      },
+      incrementTime: function(){
+        if(this.seconds < 59){
+          this.seconds += 1
+        } else if (this.minutes < 59){
+          this.minutes += 1;
+          this.seconds = 0;
+        } else if (this.hours < 12) {
+          this.hours += 1;
+          this.minutes = 0;
+          this.seconds = 0;
+        } else {
+          this.hours = 1;
+          this.minutes = 0;
+          this.seconds = 0;
+        }
+        this.updateDisplay();
+      },
+      updateDisplay: function(){
+        $(this.elem).find('.js_hours').html(this.hours).end().
+                     find('.js_minutes').html(this.minutes).end().
+                     find('.js_seconds').html(this.seconds);
+      },
+      minutes: 0,
+      seconds: 0,
       init: function(start_hour){    // INITIALIZATION
         this.hours = start_hour || 12;
-        this.minutes = 0;
-        this.seconds = 0;
         this.start();
       }
     });
@@ -93,21 +97,22 @@ What does the code look like?
 
 Notes on the code
 -----------------
-- `prototype` hash:
+- methods in the hash:
 
-    mainly used for defining instance methods.
-    
+    Instance methods.
     In each method, `this` corresponds to the object, and `this.elem` corresponds to the DOM element.
-    
-    'Class level' attributes could also be set here, e.g. a count of objects, etc.
-    
-- `init` function:
+
+- attributes in the hash:
+
+    Starting values for any instance attributes
+
+- `init` method:
 
     Any initialization code here.
     
     Any arguments passed to `clock` are passed straight through to here
     
-    As in the prototype hash, `this` corresponds to the object and `this.elem` corresponds to the DOM element
+    As in other methods, `this` corresponds to the object and `this.elem` corresponds to the DOM element
 
 
 Inter-object communication

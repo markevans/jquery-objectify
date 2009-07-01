@@ -6,8 +6,7 @@
   $.objectify = function(name, opts){
     
     // 'prototype_vars' correspond to both methods and attributes
-    var prototype_vars = opts.prototype || {};
-    var code_block     = opts.init      || function(){};
+    var prototype_vars = opts || {};
 
     // Add the 'transmit' method to the prototype
     prototype_vars.transmit = function(event_name){
@@ -39,7 +38,8 @@
           selector: selector
         };
 
-        code_block.apply(obj, args);
+        // Call the init function if it exists
+        if(obj.init) obj.init.apply(obj, args);
       });
     
       return $(this);
