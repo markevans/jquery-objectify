@@ -143,9 +143,9 @@ We can then bind to this event in the usual jquery way, e.g in 'application.js':
       $('.js_message_box').html("The time is "+clock_obj.hours+"o'clock!") 
     });
 
-...or if we had another objectify object `messageBox` attached to element `.js_message_box`, we could use the provided `connect` method:
+...or if we had another objectify object `messageBox`, we could use the provided `connect` method to connect directly:
 
-    $.connect('clock.hour_changed', '.js_message_box', function(obj1, obj2){
+    $.connect('clock.hour_changed', 'messageBox', function(obj1, obj2){
       obj2.display("It's "+obj1.hours+" o'clock!")
     });
 

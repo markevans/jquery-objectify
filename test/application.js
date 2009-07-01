@@ -9,8 +9,8 @@ $(function(){
   $('.js_message_box').messageBox();
   
   // Bindings
-  $.connect('square.starting_to_count', '.js_message_box', function(obj1, obj2){ obj2.display('Number '+obj1.num+' starting to count!'); });
-  $.connect('square.finished_counting', '.js_message_box', function(obj1, obj2){ obj2.display('Number '+obj1.num+' finished counting!'); });
+  $.connect('square.starting_to_count', 'messageBox', function(obj1, obj2){ obj2.display('Number '+obj1.num+' starting to count!'); });
+  $.connect('square.finished_counting', 'messageBox', function(obj1, obj2){ obj2.display('Number '+obj1.num+' finished counting!'); });
 
 });
   

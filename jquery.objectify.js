@@ -3,6 +3,8 @@
   // Taken from http://github.com/markevans/jquery-objectify
   // See the README for usage instructions
 
+  $.objectifications = [];
+
   $.objectify = function(name, opts){
     
     // 'prototype_vars' correspond to both methods and attributes
@@ -23,6 +25,9 @@
       var selector = $(this).selector;
       var n = $(this).length; // Number of elements matching selector
       var args = arguments;
+      
+      // Store which selector was used to apply which objectify object
+      $.objectifications.push([selector, name]);
     
       $(this).each(function(i){
         // Instantiate the object and add instance methods/attributes to it
@@ -47,14 +52,20 @@
   
   };
 
-  // Connect is a thin wrapper around bind for global events
-  $.connect = function(global_event, selector, func){
-    $().bind(global_event, function(){
-      var obj = arguments[1];
-      $(selector).each(function(){
-        func.call(this, obj, this.obj);
-      });
-    });
+  // Connect is a wrapper around bind for global events, that connects objectified objects directly
+  $.connect = function(global_event, obj2_name, func){
+    var selector, name;
+    for(i in $.objectifications){
+      selector = $.objectifications[i][0];
+      name     = $.objectifications[i][1];
+      if(name == obj2_name){
+        $().bind(global_event, function(evt, obj1){
+          $(selector).each(function(){
+            func.call(this, obj1, this.obj);
+          });
+        });
+      }
+    }
   };
 
 })(jQuery);
