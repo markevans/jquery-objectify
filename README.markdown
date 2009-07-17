@@ -82,7 +82,7 @@ What does the code for the clock look like?
         this.updateDisplay();
       },
       updateDisplay: function(){
-        $(this.elem).find('.js_hours').html(this.hours).end().
+        this.jElem().find('.js_hours').html(this.hours).end().
                      find('.js_minutes').html(this.minutes).end().
                      find('.js_seconds').html(this.seconds);
       },
@@ -100,7 +100,7 @@ Notes on the code
 - methods in the hash:
 
     Instance methods.
-    In each method, `this` corresponds to the object, and `this.elem` corresponds to the DOM element.
+    In each method, `this` corresponds to the object, `this.elem` corresponds to the DOM element, and `this.jElem()` is a shortcut for `$(this.elem)`
 
 - attributes in the hash:
 
@@ -112,7 +112,7 @@ Notes on the code
     
     Any arguments passed to `clock` are passed straight through to here
     
-    As in other methods, `this` corresponds to the object and `this.elem` corresponds to the DOM element
+    `this`, `this.elem` and `this.jElem()` are as in other methods
 
 
 Inter-object communication
@@ -171,7 +171,9 @@ has a `elem` attribute pointing to the DOM element.
 So to access an object directly, we can, for example, set the third clock object to 2 o'clock by doing
 
     $('.js_clock')[2].obj.set(2,0,0)
-    
+
+You can often avoid needing to access it like this, however, by using `$.connect`, as described above.
+
 Requirements
 ===========
 - [jQuery](http://jquery.com/) (works with at least version 1.2.6 as far as I know, probably earlier too)

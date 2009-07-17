@@ -10,10 +10,15 @@
     // 'prototype_vars' correspond to both methods and attributes
     var prototype_vars = opts || {};
 
-    // Add the 'transmit' method to the prototype
-    prototype_vars.transmit = function(event_name){
-      $().trigger(name+'.'+event_name, this);
-    };
+    // Add extra methods to the prototype
+    $.extend(prototype_vars, {
+      transmit: function(event_name){
+        $().trigger(name+'.'+event_name, this);
+      },
+      jElem: function(){
+        return $(this.elem);
+      }
+    });
 
     // Define class with prototype methods and attributes
     var klass = function(){};

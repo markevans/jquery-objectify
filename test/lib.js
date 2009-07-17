@@ -3,7 +3,7 @@
   //////// Message Box ////////
   $.objectify('messageBox', {
     display: function(message){
-      $(this.elem).html(message);
+      this.jElem().html(message);
     }
   });
 
@@ -12,7 +12,7 @@
   $.objectify('square', {
     nextCount: function(){
       this.count++;
-      $(this.elem).html(this.count);
+      this.jElem().html(this.count);
       if(this.count == 5){
         clearInterval(this.counter_interval_id);
         this.colour('green');
@@ -26,7 +26,7 @@
       this.counter_interval_id = setInterval(function(){ self.nextCount(); }, 400);
     },
     colour: function(clr){
-      $(this.elem).css({'background-color': clr});
+      this.jElem().css({'background-color': clr});
     },
     init: function(){
       var self = this;
@@ -69,9 +69,9 @@
       this.updateDisplay();
     },
     updateDisplay: function(){
-      $(this.elem).find('.js_hours').html(this.hours).end().
-                   find('.js_minutes').html(this.minutes).end().
-                   find('.js_seconds').html(this.seconds);
+      this.jElem().find('.js_hours').html(this.hours).end().
+                 find('.js_minutes').html(this.minutes).end().
+                 find('.js_seconds').html(this.seconds);
     },
     seconds: 33,
     init: function(start_hour, start_minutes){
