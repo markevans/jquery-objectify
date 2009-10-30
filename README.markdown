@@ -82,9 +82,9 @@ What does the code for the clock look like?
         this.updateDisplay();
       },
       updateDisplay: function(){
-        this.jElem().find('.js_hours').html(this.hours).end().
-                     find('.js_minutes').html(this.minutes).end().
-                     find('.js_seconds').html(this.seconds);
+        this.jelem.find('.js_hours').html(this.hours).end().
+                   find('.js_minutes').html(this.minutes).end().
+                   find('.js_seconds').html(this.seconds);
       },
       minutes: 0,
       seconds: 0,
@@ -100,7 +100,7 @@ Notes on the code
 - methods in the hash:
 
     Instance methods.
-    In each method, `this` corresponds to the object, `this.elem` corresponds to the DOM element, and `this.jElem()` is a shortcut for `$(this.elem)`
+    In each method, `this` corresponds to the object, `this.elem` corresponds to the DOM element, and `this.jelem` is a shortcut for `$(this.elem)`
 
 - attributes in the hash:
 
@@ -112,7 +112,7 @@ Notes on the code
     
     Any arguments passed to `clock` are passed straight through to here
     
-    `this`, `this.elem` and `this.jElem()` are as in other methods
+    `this`, `this.elem` and `this.jelem` are as in other methods
 
 
 Inter-object communication

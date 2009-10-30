@@ -14,9 +14,6 @@
     $.extend(prototype_vars, {
       transmit: function(event_name){
         $().trigger(name+'.'+event_name, this);
-      },
-      jElem: function(){
-        return $(this.elem);
       }
     });
 
@@ -38,7 +35,9 @@
         // Instantiate the object and add instance methods/attributes to it
         var obj = new klass();
         
-        obj.elem = this; // Make the elem available for use in object methods via 'this.elem'
+        obj.elem = this; // Make the dom element available for use in object methods via 'this.elem'
+        obj.jelem = $(this); // Make the jquerified dom element available for use in object methods via 'this.jelem'
+        
         this.obj = obj;  // Make the obj available for use in jquery methods via 'this.obj'
 
         // Add some useful meta-data to the object
